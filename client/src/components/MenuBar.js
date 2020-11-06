@@ -17,14 +17,14 @@ function MenuBar() {
         active={activeItem === "home"}
         onClick={handleItemClick}
         as={Link}
-        to="/home"
+        to="/"
       />
       <Menu.Item
         name="home"
         active={activeItem === "home"}
         onClick={handleItemClick}
         as={Link}
-        to="/home"
+        to="/"
       />
       <Menu.Menu position="right">
         <Menu.Item
