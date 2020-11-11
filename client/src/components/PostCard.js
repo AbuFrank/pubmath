@@ -1,47 +1,46 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-
 import moment from "moment";
+
+import { AuthContext } from "../context/auth";
+import LikeButton from "./LikeButton";
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) {
-  function likePost() {
-    console.log("Like Post!!");
-  }
-
-  function commentPost() {
-    console.log("Comment on Post!!");
-  }
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className="card mb-10 fluid">
+    <div className="ui card mb-10 fluid">
       <div className="content">
         <img
           className="right floated mini ui image"
           src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
         />
         <div className="header">{username}</div>
-        <div className="meta" as={Link} to={`/posts/${id}`}>
+        <Link className="meta" to={`/posts/${id}`}>
           {moment(createdAt).fromNow(true)}
-        </div>
+        </Link>
         <div className="description">{body}</div>
         <div>
-          <div onClick={likePost} className="ui labeled button">
-            <div className="ui teal basic button">
-              <i className="heart icon"></i>
-            </div>
-            <a className="ui basic teal left pointing label">{likeCount}</a>
-          </div>
-        </div>
-        <div>
-          <div onClick={commentPost} className="ui labeled button">
+          <LikeButton post={{ id, likes, likeCount }} user={user} />
+          <Link to={`/post/${id}`} className="ui labeled button right">
             <div className="ui blue basic button">
-              <i className="heart icon"></i>
+              <i className="comments icon"></i>
             </div>
-            <a className="ui basic blue left pointing label">{commentCount}</a>
-          </div>
+            <span className="ui basic blue left pointing label">
+              {commentCount}
+            </span>
+          </Link>
         </div>
+        {user && user.username === username && (
+          <div onClick={() => console.log("delete post!!!")}>
+            <i
+              aria-hidden="true"
+              className="float-right icon red right trash"
+            ></i>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,8 +13,14 @@ function PostForm() {
     variables: values,
     update(proxy, result) {
       const data = proxy.readQuery({ query: FETCH_POSTS_QUERY });
-      data.getPosts = [result.data.createPost, ...data.getPosts];
-      proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+
+      proxy.writeQuery({
+        query: FETCH_POSTS_QUERY,
+        data: {
+          ...data,
+          getPosts: [result.data.createPost, ...data.getPosts],
+        },
+      });
       values.body = "";
     },
   });
@@ -24,7 +30,7 @@ function PostForm() {
   }
 
   return (
-    <div className="container mx-auto">
+    <>
       <form onSubmit={onSubmit} noValidate className="ui form">
         <h1 className="text-center">Create a post:</h1>
         <div className="field">
@@ -35,47 +41,21 @@ function PostForm() {
             name="body"
             placeholder="Hi World!"
             onChange={onChange}
-            // error={errors.body ? "true" : "false"}
+            error={error ? "true" : "false"}
           />
         </div>
-        {/* <div className="field">
-          <label>Email</label>
-          <input
-            value={values.email}
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={onChange}
-            error={errors.email ? "true" : "false"}
-          />
-        </div>
-        <div className="field">
-          <label>Password</label>
-          <input
-            value={values.password}
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={onChange}
-            error={errors.password ? "true" : "false"}
-          />
-        </div>
-        <div className="field">
-          <label>Confirm Password</label>
-          <input
-            value={values.confirmPassword}
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            onChange={onChange}
-            error={errors.confirmPassword ? "true" : "false"}
-          />
-        </div> */}
         <button className="ui button teal" type="submit">
           Submit
         </button>
       </form>
-    </div>
+      {error && (
+        <div className="ui error message">
+          <ul className="list">
+            <li>{error.graphQLErrors[0] && error.graphQLErrors[0].message}</li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 
