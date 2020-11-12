@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import MyPopup from "../util/MyPopup";
 
 function LikeButton({ user, post: { id, likeCount, likes } }) {
   const [liked, setLiked] = useState(false);
@@ -34,10 +35,8 @@ function LikeButton({ user, post: { id, likeCount, likes } }) {
 
   return (
     <div onClick={likePost} className="ui labeled button left">
-      {likeButton}
-      <a href="#" className="ui basic teal left pointing label">
-        {likeCount}
-      </a>
+      <MyPopup content={liked ? "Unlike" : "Like"}>{likeButton}</MyPopup>
+      <button className="ui basic teal left pointing label">{likeCount}</button>
     </div>
   );
 }

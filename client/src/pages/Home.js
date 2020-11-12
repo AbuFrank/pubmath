@@ -30,7 +30,7 @@ function Home() {
           <Transition.Group>
             {posts &&
               posts.map((post) => (
-                <div key={post.id} className="ui transition zoom column mb-2">
+                <div key={post.id} className="ui transition zoom column">
                   <PostCard post={post} />
                 </div>
               ))}

@@ -4,6 +4,9 @@ import moment from "moment";
 
 import { AuthContext } from "../context/auth";
 import LikeButton from "./LikeButton";
+import DeleteButton from "./DeleteButton";
+import { Popup } from "semantic-ui-react";
+import MyPopup from "../util/MyPopup";
 
 function PostCard({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
@@ -24,23 +27,18 @@ function PostCard({
         <div className="description">{body}</div>
         <div>
           <LikeButton post={{ id, likes, likeCount }} user={user} />
-          <Link to={`/post/${id}`} className="ui labeled button right">
-            <div className="ui blue basic button">
-              <i className="comments icon"></i>
-            </div>
-            <span className="ui basic blue left pointing label">
-              {commentCount}
-            </span>
-          </Link>
+          <MyPopup content="Add comment to post">
+            <Link to={`/posts/${id}`} className="ui labeled button right">
+              <div className="ui blue basic button">
+                <i className="comments icon"></i>
+              </div>
+              <span className="ui basic blue left pointing label">
+                {commentCount}
+              </span>
+            </Link>
+          </MyPopup>
         </div>
-        {user && user.username === username && (
-          <div onClick={() => console.log("delete post!!!")}>
-            <i
-              aria-hidden="true"
-              className="float-right icon red right trash"
-            ></i>
-          </div>
-        )}
+        {user && user.username === username && <DeleteButton postId={id} />}
       </div>
     </div>
   );
